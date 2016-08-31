@@ -138,40 +138,30 @@ function HttpModule (moduleOptions) {
       })
     }
 
+    function optionsFactory(options, url, method, body) {
+		options = options || {};
+		options.url = options.query ? url + '?' + utils.urlEncode(options.query) : url;
+		options.method = method;
+		options.body = body;
+		return requestService(options);
+	}
+	
     module.addServices({
       request: requestService,
       get: function (url, options) {
-        options = options || {}
-        options.url = options.query ? url + '?' + utils.urlEncode(options.query) : url
-        options.method = 'GET'
-        return requestService(options)
+        return optionsFactory(options, url, 'GET')
       },
       post: function (url, body, options) {
-        options = options || {}
-        options.url = options.query ? url + '?' + utils.urlEncode(options.query) : url
-        options.method = 'POST'
-        options.body = body
-        return requestService(options)
+        return optionsFactory(options, url, 'POST', body)
       },
       put: function (url, body, options) {
-        options = options || {}
-        options.url = options.query ? url + '?' + utils.urlEncode(options.query) : url
-        options.method = 'PUT'
-        options.body = body
-        return requestService(options)
+        return optionsFactory(options, url, 'PUT', body)
       },
       patch: function (url, body, options) {
-        options = options || {}
-        options.url = options.query ? url + '?' + utils.urlEncode(options.query) : url
-        options.method = 'PATCH'
-        options.body = body
-        return requestService(options)
+        return optionsFactory(options, url, 'PATCH', body)
       },
       delete: function (url, options) {
-        options = options || {}
-        options.url = options.query ? url + '?' + utils.urlEncode(options.query) : url
-        options.method = 'DELETE'
-        return requestService(options)
+        return optionsFactory(options, url, 'DELETE')
       },
       updateOptions: function (newOptions) {
         moduleOptions = mergeWith(newOptions, moduleOptions)
